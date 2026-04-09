@@ -23,26 +23,21 @@ export function createCalendarNavStyles(ctx: CalendarViewStyleContext) {
       font-size: 10px;
       color: var(--text-sec);
     `,
-    todayBtn: css`
-      height: 28px;
-      padding: 0 10px;
-      font-size: 12px;
-      font-weight: 500;
-    `,
+    /** 仅使用本文件生成的 class（`&&` 提权），不写字面量 `ant-btn`，避免「类名未使用」静态检查误报 */
     navBtn: css`
-      cursor: pointer;
-      width: 28px;
-      height: 28px;
-      padding: 0;
-      border: none;
-      background: transparent;
-      color: var(--text-sec);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      && {
+        color: var(--text-main);
+      }
 
-      &:hover {
-        background: ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'};
+      &&:not(:disabled):hover {
+        color: var(--text-main);
+        background: ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'} !important;
+      }
+    `,
+    todayBtn: css`
+      && {
+        font-size: 12px;
+        font-weight: 500;
       }
     `,
   };

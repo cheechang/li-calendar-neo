@@ -1,5 +1,6 @@
 import { CaretDownFilled, CaretUpFilled } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
+import classNames from 'classnames';
 import type { Dayjs } from 'dayjs';
 import type { ReactElement } from 'react';
 import { useCalendarViewContext } from '../../../hooks/calender/CalendarViewContext.tsx';
@@ -34,7 +35,7 @@ function CalendarMonthNav(): ReactElement {
         <Tooltip title="回到今天">
           <Button
             autoInsertSpace={false}
-            // className={styles.todayBtn}
+            className={classNames(styles.navBtn, styles.todayBtn)}
             size="small"
             type="text"
             shape="circle"
@@ -45,7 +46,7 @@ function CalendarMonthNav(): ReactElement {
         </Tooltip>
         <Tooltip title="上个月">
           <Button
-            // className={styles.navBtn}
+            className={styles.navBtn}
             size="small"
             type="text"
             shape="circle"
@@ -55,7 +56,7 @@ function CalendarMonthNav(): ReactElement {
         </Tooltip>
         <Tooltip title="下个月">
           <Button
-            // className={styles.navBtn}
+            className={styles.navBtn}
             size="small"
             type="text"
             shape="circle"
