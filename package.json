@@ -1,0 +1,55 @@
+{
+  "name": "li-calendar",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "lint": "biome check --reporter summary",
+    "lint:fix": "biome check --fix",
+    "format": "biome format --write",
+    "typecheck": "tsc --noEmit",
+    "lint:rust": "cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets --all-features -- -D warnings",
+    "format:rust": "cargo fmt --manifest-path src-tauri/Cargo.toml",
+    "build:mac-arm64": "tauri build --target aarch64-apple-darwin",
+    "build:mac-intel": "tauri build --target x86_64-apple-darwin",
+    "build:mac-universal": "tauri build --target universal-apple-darwin",
+    "build:mac-all": "tauri build --target aarch64-apple-darwin && tauri build --target x86_64-apple-darwin && tauri build --target universal-apple-darwin"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^6.1.1",
+    "@tauri-apps/api": "2.10.1",
+    "@tauri-apps/plugin-autostart": "^2.5.1",
+    "@tauri-apps/plugin-clipboard-manager": "~2.3.2",
+    "@tauri-apps/plugin-opener": "~2.5.3",
+    "@tauri-apps/plugin-os": "~2.3.2",
+    "@tauri-apps/plugin-store": "^2.4.2",
+    "antd": "^6.3.5",
+    "antd-style": "^4.1.0",
+    "classnames": "^2.5.1",
+    "dayjs": "^1.11.20",
+    "lunar-typescript": "^1.8.6",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "zustand": "^5.0.12"
+  },
+  "devDependencies": {
+    "@babel/core": "8.0.0-rc.2",
+    "@biomejs/biome": "^2.4.10",
+    "@rolldown/plugin-babel": "^0.2.2",
+    "@tauri-apps/cli": "2.10.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "terser": "^5.46.1",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.7"
+  }
+}

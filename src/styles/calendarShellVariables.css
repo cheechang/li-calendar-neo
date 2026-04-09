@@ -1,0 +1,14 @@
+/**
+ * 日历壳层语义变量占位：实际值由 shellStyles 的 .micaContainer 按主题设置并向下继承。
+ * 此处供 IDE（CssUnresolvedCustomProperty）解析；与浅色默认一致。
+ * --calendar-shadow 使用 initial，使 var(--calendar-shadow, …) 在未覆盖时走第二参数。
+ */
+:root {
+  --mica-bg: transparent;
+  --card-bg: rgba(255, 255, 255, 0.5);
+  --accent: #0067c0;
+  --text-main: #1c1c1c;
+  --text-sec: #5d5d5d;
+  --calendar-radius: 16px;
+  --calendar-shadow: initial;
+}

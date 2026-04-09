@@ -1,0 +1,18 @@
+@import "./styles/calendarShellVariables.css";
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+input,
+textarea,
+[contenteditable="true"] {
+  user-select: text;
+  -webkit-user-select: text;
+}

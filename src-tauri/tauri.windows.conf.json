@@ -1,0 +1,22 @@
+{
+  "bundle": {
+    "targets": ["nsis"],
+    "windows": {
+      "webviewInstallMode": {
+        "silent": true,
+        "type": "downloadBootstrapper"
+      },
+      "nsis": {
+        "displayLanguageSelector": false,
+        "installerIcon": "icons/icon.ico",
+        "installMode": "currentUser",
+        "compression": "lzma",
+        "languages": ["SimpChinese", "TradChinese", "English"],
+        "template": "installer.nsi"
+      },
+      "wix": {
+        "language": "zh-CN"
+      }
+    }
+  }
+}
