@@ -64,6 +64,12 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
       .${cx(term)} {
         color: ${isDark ? '#000000' : '#ffffff'};
       }
+
+      /* 覆盖 .cell 的灰底 hover：保持强调色底，整体略提亮作为反馈（不叠灰底） */
+      &:hover {
+        background: var(--accent);
+        filter: brightness(1.07);
+      }
     `,
     selected: css`
       box-shadow: inset 0 0 0 1px var(--accent);

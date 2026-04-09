@@ -260,6 +260,8 @@ export function useCalendarViewModel({
 
   /** 当前窗口类型，用于决定关闭时是 hide 还是 close。 */
   const windowKind = getCalendarWindowKindFromLocation();
+  const showPinButtonEffective =
+    showPinButton && !(windowKind === 'desktop' && isWindows);
 
   /** 关闭或隐藏当前日历窗口；从桌面组件收起时同步关闭「桌面组件」开关。 */
   const handleClose = (): void => {
@@ -304,7 +306,7 @@ export function useCalendarViewModel({
     selectedLunar,
     dragRegion,
     showThemeButton,
-    showPinButton,
+    showPinButton: showPinButtonEffective,
     showSettingsButton,
     showCloseButton,
     theme,
