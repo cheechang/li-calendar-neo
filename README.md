@@ -25,3 +25,12 @@ pnpm install
 pnpm tauri dev
 ```
 
+## 🤔常见问题
+
+### macOS版本无法打开问题
+
+安装完成后，复制以下命令到终端，然后按回⻋键
+
+```
+sudo xattr -r -d com.apple.quarantine /Applications/liCalendar.app
+```
