@@ -17,11 +17,12 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2.5.6", features = [] }
 
 [dependencies]
-tauri = { version = "2.10.3", features = ["macos-private-api", "tray-icon"] }
+tauri = { version = "2.10.3", features = ["macos-private-api", "tray-icon", "image-ico"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 once_cell = "1.21"
 tokio = { version = "1.51", features = ["sync"] }
+indexmap = "~1.8"
 tauri-plugin-positioner = "2.3.1"
 tauri-plugin-store = "2.4.2"
 tauri-plugin-opener = "2"

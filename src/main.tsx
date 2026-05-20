@@ -9,6 +9,7 @@ import MobileWindow from './windows/mobile/MobileWindow.tsx';
 import PopupWindow from './windows/PopupWindow.tsx';
 import './global.css';
 import { useWindowsTrayClockBootstrap } from './hooks/settings/useWindowsTrayClockBootstrap.ts';
+import { initializeHolidayData } from './services/holidayService.ts';
 import { prepareSync } from './sync/base/crossWindowSync.ts';
 
 /** 根据当前平台和 URL 参数，决定应用根节点应该渲染哪一种窗口视图。 */
@@ -64,7 +65,9 @@ function App(): ReactElement {
   return resolveWindow(mobileView);
 }
 
-/** 等配置同步系统准备完成后，再挂载 React 根节点。 */
-prepareSync().then(() => {
-  ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<App />);
-});
+/** 等配置同步系统准备完成后，初始化节假日数据，再挂载 React 根节点。 */
+prepareSync()
+  .then(() => initializeHolidayData())
+  .then(() => {
+    ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<App />);
+  });

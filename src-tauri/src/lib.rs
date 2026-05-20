@@ -18,11 +18,11 @@ use commands::{
     apply_custom_clock_text, get_clock_text, get_macos_tray_bar_icon,
     get_macos_tray_date_icon_style, get_macos_tray_icon_px, get_macos_tray_title_template,
     get_supported_window_effects, get_system_time_millis_since_epoch, greet, hide_calendar,
-    open_main_window, popup_ready,
-    restore_default_clock, set_calendar_pin, set_desktop_widget_enabled,
-    set_macos_tray_bar_icon, set_macos_tray_date_icon_style, set_macos_tray_icon_px,
-    set_macos_tray_title_template, set_macos_vibrancy, set_taskbar_widget_enabled_command,
-    show_calendar, test_clock_detection, toggle_calendar, toggle_calendar_at_position,
+    open_main_window, popup_ready, restore_default_clock, set_calendar_pin,
+    set_desktop_widget_enabled, set_macos_tray_bar_icon, set_macos_tray_date_icon_style,
+    set_macos_tray_icon_px, set_macos_tray_title_template, set_macos_vibrancy,
+    set_taskbar_widget_enabled_command, show_calendar, test_clock_detection, toggle_calendar,
+    toggle_calendar_at_position,
 };
 #[cfg(desktop)]
 use menu::handle_menu_event;
@@ -108,7 +108,9 @@ pub fn run() {
         ))
         .on_menu_event(|app, event| {
             // 处理系统菜单事件
-            handle_menu_event(app, event.id().as_ref());
+            let menu_id = event.id().as_ref();
+            eprintln!("[lib] on_menu_event fired, id={}", menu_id);
+            handle_menu_event(app, menu_id);
         })
         .manage(shared_state) // 注入应用状态
         .invoke_handler(tauri::generate_handler![

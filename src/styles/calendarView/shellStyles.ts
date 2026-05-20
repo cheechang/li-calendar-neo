@@ -10,7 +10,10 @@ export function createCalendarShellStyles(ctx: CalendarViewStyleContext) {
     overlayBackground,
     textureBackground,
     isDark,
+    fontSize,
   } = ctx;
+
+  const fontScale = fontSize / 14;
 
   return {
     micaContainer: css`
@@ -19,7 +22,9 @@ export function createCalendarShellStyles(ctx: CalendarViewStyleContext) {
       --accent: ${isDark ? '#60cdff' : '#0067c0'};
       --text-main: ${isDark ? '#ffffff' : '#1c1c1c'};
       --text-sec: ${isDark ? '#cccccc' : '#5d5d5d'};
-      width: 320px;
+      --font-size-base: ${fontSize}px;
+      --font-scale: ${fontScale};
+      width: calc(320px + (${fontSize}px - 14px) * 7);
       background: var(--mica-bg);
       backdrop-filter: ${backdropFilter};
       -webkit-backdrop-filter: ${backdropFilter};

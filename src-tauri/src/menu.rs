@@ -74,6 +74,7 @@ pub fn build_context_menu(
 /// * `app_handle` - 应用程序句柄
 /// * `menu_id` - 菜单项标识
 pub fn handle_menu_event(app_handle: &AppHandle, menu_id: &str) {
+    eprintln!("[menu] handle_menu_event called, id={}", menu_id);
     match menu_id {
         MENU_SHOW | MENU_TOGGLE_CALENDAR => {
             // 获取共享状态中的窗口管理器。

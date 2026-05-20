@@ -5,12 +5,14 @@ import { openMobileCalendarView } from '../../utils/tauriUtils.ts';
 import About from '../About.tsx';
 import AutostartForm from './forms/AutostartForm.tsx';
 import CalendarForm from './forms/CalendarForm.tsx';
+import FontSizeForm from './forms/FontSizeForm.tsx';
+import HolidayDataForm from './forms/HolidayDataForm.tsx';
 import MacosTrayTitleSettings from './forms/MacosTrayTitleSettings.tsx';
 import TransparentEffectForm from './forms/TransparentEffectForm.tsx';
 import WidgetShowForm from './forms/WidgetShowForm.tsx';
 import WindowsTrayForm from './forms/WindowsTrayForm.tsx';
 
-type SettingsTab = 'general' | 'calendar' | 'trayClock' | 'trayTitle' | 'about';
+type SettingsTab = 'general' | 'calendar' | 'holiday' | 'trayClock' | 'trayTitle' | 'about';
 
 interface SettingsPageProps {
   /** 移动端精简模式下，只保留“日历内容”配置。 */
@@ -34,6 +36,7 @@ const Settings: React.FC<SettingsPageProps> = ({ mobileCalendarOnly = false }) =
     : [
         { key: 'general', label: '通用设置' },
         { key: 'calendar', label: '日历内容' },
+        { key: 'holiday', label: '节假日数据' },
         ...(isWindows ? [{ key: 'trayClock', label: '任务栏时钟' }] : []),
         ...(isMacos ? [{ key: 'trayTitle', label: '菜单图标' }] : []),
         { key: 'about', label: '关于' },
@@ -47,11 +50,14 @@ const Settings: React.FC<SettingsPageProps> = ({ mobileCalendarOnly = false }) =
           <div>
             {isDesktop && <AutostartForm />}
             {isDesktop && <WidgetShowForm />}
+            <FontSizeForm />
             <TransparentEffectForm />
           </div>
         );
       case 'calendar':
         return <CalendarForm />;
+      case 'holiday':
+        return <HolidayDataForm />;
       case 'trayClock':
         return <WindowsTrayForm />;
       case 'trayTitle':

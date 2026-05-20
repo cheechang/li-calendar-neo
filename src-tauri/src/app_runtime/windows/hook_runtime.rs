@@ -102,9 +102,29 @@ fn handle_right_click(app_handle: &AppHandle) {
             .or_else(|| app_handle.get_webview_window("desktop_calendar"));
         if let Some(window) = target_window {
             IS_MENU_OPEN.store(true, Ordering::SeqCst);
+
+            let was_visible = window.is_visible().unwrap_or(false);
+            if !was_visible {
+                eprintln!("[hook] Target window not visible, showing before popup_menu");
+                let _ = window.show();
+            }
+
             let _ = window.set_focus();
-            let _ = window.popup_menu(&context_menu);
+
+            match window.popup_menu(&context_menu) {
+                Ok(_) => eprintln!("[hook] popup_menu completed successfully"),
+                Err(e) => eprintln!("[hook] popup_menu failed: {}", e),
+            }
+
+            if !was_visible {
+                let _ = window.hide();
+            }
+
             IS_MENU_OPEN.store(false, Ordering::SeqCst);
+        } else {
+            eprintln!("[hook] No target window found for context menu");
         }
+    } else {
+        eprintln!("[hook] Failed to build context menu");
     }
 }

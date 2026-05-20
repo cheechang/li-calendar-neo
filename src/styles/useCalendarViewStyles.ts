@@ -15,12 +15,14 @@ import type { CalendarViewStyleContext, CalendarViewStyleProps } from './calenda
 export const useCalendarViewStyles = createStyles(({ css, cx }, props: CalendarViewStyleProps) => {
   const theme = computeCalendarTheme(props);
   const isDark = props.isDark ?? false;
+  const fontSize = props.fontSize ?? 14;
 
   const ctx: CalendarViewStyleContext = {
     ...theme,
     css,
     cx,
     isDark,
+    fontSize,
   };
 
   return {

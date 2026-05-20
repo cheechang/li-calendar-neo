@@ -15,6 +15,9 @@ const CalendarForm: React.FC = () => {
       initialValues={config}
       onValuesChange={syncValuesConfig}
     >
+      <Form.Item name="themeFollowSystem" label="自动跟随系统主题">
+        <Switch />
+      </Form.Item>
       <Form.Item name="calendarFooterVisible" label="显示底部信息区域">
         <Switch />
       </Form.Item>

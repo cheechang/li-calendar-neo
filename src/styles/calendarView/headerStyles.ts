@@ -42,20 +42,20 @@ export function createCalendarHeaderStyles(ctx: CalendarViewStyleContext) {
       }
     `,
     title: css`
-      font-size: 16px;
+      font-size: calc(16px * var(--font-scale));
       font-weight: 500;
       line-height: 1.2;
       margin-bottom: 3px;
       color: var(--text-main);
     `,
     subtitle: css`
-      font-size: 14px;
+      font-size: calc(14px * var(--font-scale));
       line-height: 1.25;
       color: var(--text-sec);
       opacity: 0.9;
     `,
     festivalList: css`
-      font-size: 13px;
+      font-size: calc(13px * var(--font-scale));
       color: var(--accent);
       font-weight: 500;
       padding: 0 2px 1px;
@@ -93,7 +93,7 @@ export function createCalendarHeaderStyles(ctx: CalendarViewStyleContext) {
       flex-shrink: 0;
     `,
     festivalEmpty: css`
-      font-size: 12px;
+      font-size: calc(12px * var(--font-scale));
       color: var(--text-sec);
       opacity: 0.85;
       padding: 0 2px;

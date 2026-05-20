@@ -1,5 +1,5 @@
-import dayjs, { type Dayjs } from 'dayjs';
 import { invoke } from '@tauri-apps/api/core';
+import dayjs, { type Dayjs } from 'dayjs';
 import { Solar } from 'lunar-typescript';
 import {
   type CSSProperties,
@@ -108,6 +108,7 @@ export function useCalendarViewModel({
     footerCountdownVisible,
     frontendWindowEffectEnabled,
     frontendWindowTransparency,
+    fontSize,
   } = config;
   /** 页脚总开关。 */
   const showFooter = calendarFooterVisible;
@@ -130,6 +131,7 @@ export function useCalendarViewModel({
     transparent: effectiveTransparent,
     isDark,
     backgroundOpacity: effectiveBackgroundOpacity,
+    fontSize,
   });
 
   // 选中哪一天、月历面板显示哪个月（可不同步，例如选其它月中的日期会跳面板）

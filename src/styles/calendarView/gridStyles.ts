@@ -4,7 +4,7 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
   const { css, cx, isDark } = ctx;
 
   const lunar = css`
-    font-size: 10px;
+    font-size: calc(10px * var(--font-scale));
     color: ${isDark ? '#999999' : '#707070'};
     line-height: 1;
     margin-top: 1px;
@@ -24,15 +24,15 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
     `,
     weekday: css`
       text-align: center;
-      font-size: 13px;
+      font-size: calc(13px * var(--font-scale));
       font-weight: 400;
       color: var(--text-main);
       padding-bottom: 12px;
       height: 24px;
     `,
     cell: css`
-      width: 40px;
-      height: 40px;
+      width: calc(40px + (var(--font-size-base) - 14px) * 1.5);
+      height: calc(40px + (var(--font-size-base) - 14px) * 1.5);
       background: transparent;
       display: flex;
       flex-direction: column;
@@ -76,7 +76,7 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
       border-radius: 50%;
     `,
     dateText: css`
-      font-size: 13px;
+      font-size: calc(13px * var(--font-scale));
       font-weight: 400;
       line-height: 1.1;
     `,
@@ -86,7 +86,7 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
       position: absolute;
       top: 4px;
       right: 4px;
-      font-size: 8px;
+      font-size: calc(8px * var(--font-scale));
       width: 12px;
       height: 12px;
       display: flex;

@@ -5,6 +5,7 @@ import type {
   ConfigItem,
   ConfigMacos,
   ConfigWindows,
+  HolidayDataConfig,
   SystemConfig,
 } from './type/configTypes.ts';
 
@@ -12,7 +13,9 @@ import type {
 const systemConfigDefaults = {
   autostart: false,
   theme: 'light',
+  themeFollowSystem: false,
   calendarPinned: false,
+  fontSize: 14,
 } satisfies SystemConfig;
 
 const calendarFooterVisibleDefaults = {
@@ -44,11 +47,19 @@ const configMacosDefaults = {
   macosTrayIconHeight: 36,
 } satisfies ConfigMacos;
 
+const holidayDataDefaults = {
+  holidayDataSource: 'builtin',
+  holidayRemoteUrl: '',
+  holidayLastUpdated: '',
+  holidayDataCache: [],
+} satisfies HolidayDataConfig;
+
 const configDefaults: ConfigItem = {
   ...systemConfigDefaults,
   ...calendarFooterVisibleDefaults,
   ...configWindowsDefaults,
   ...configMacosDefaults,
+  ...holidayDataDefaults,
 };
 
 export const useConfigSync = createSync<ConfigItem>('liConfig', configDefaults);

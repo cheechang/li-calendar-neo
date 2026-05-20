@@ -1,5 +1,37 @@
 import type { TrayClockDateFormat, TrayClockTimeFormat } from '../../enums/trayClockEnum.ts';
 
+/** 节假日数据源类型 */
+export type HolidayDataSource = 'builtin' | 'remote';
+
+/** 单条节假日补丁记录 */
+export interface HolidayPatchItem {
+  /** 日期 YYYY-MM-DD */
+  day: string;
+  /** 节日名称 */
+  name: string;
+  /** true=调休/补班(班), false=休假(休) */
+  work: boolean;
+  /** 目标节日日期 YYYY-MM-DD */
+  target: string;
+}
+
+/** 远程节假日 JSON 数据结构 */
+export interface HolidayRemoteData {
+  version?: string;
+  updatedAt?: string;
+  /** 节日名称表，若包含内置 NAMES 中没有的新节日则需提供 */
+  names?: string[];
+  holidays: HolidayPatchItem[];
+}
+
+/** 节假日数据配置项 */
+export interface HolidayDataConfig {
+  holidayDataSource: HolidayDataSource;
+  holidayRemoteUrl: string;
+  holidayLastUpdated: string;
+  holidayDataCache: HolidayPatchItem[];
+}
+
 export type MacosVibrancyEffect =
   | 'blur'
   | 'acrylic'
@@ -31,14 +63,19 @@ export interface ConfigItem
   extends SystemConfig,
     CalendarFooterVisible,
     ConfigWindows,
-    ConfigMacos {}
+    ConfigMacos,
+    HolidayDataConfig {}
 
 export interface SystemConfig {
   // 开机自启动
   autostart: boolean;
   theme: CalendarTheme;
+  /** 自动跟随系统主题切换 */
+  themeFollowSystem: boolean;
   /** 日历小窗是否固定在最前（与顶栏图钉一致，持久化） */
   calendarPinned: boolean;
+  /** 日历界面字体大小（px） */
+  fontSize: number;
 }
 
 export interface CalendarFooterVisible {

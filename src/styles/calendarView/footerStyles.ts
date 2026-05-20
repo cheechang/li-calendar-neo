@@ -25,12 +25,12 @@ export function createCalendarFooterStyles(ctx: CalendarViewStyleContext) {
       gap: 2px;
     `,
     lunarDay: css`
-      font-size: 16px;
+      font-size: calc(16px * var(--font-scale));
       font-weight: 500;
       color: var(--text-main);
     `,
     lunarYear: css`
-      font-size: 12px;
+      font-size: calc(12px * var(--font-scale));
       color: var(--text-sec);
     `,
     yiJiContainer: css`
@@ -44,7 +44,7 @@ export function createCalendarFooterStyles(ctx: CalendarViewStyleContext) {
       display: flex;
       align-items: flex-start;
       gap: 8px;
-      font-size: 13px;
+      font-size: calc(13px * var(--font-scale));
       min-width: 0;
     `,
     yiJiBadge: css`
@@ -53,7 +53,7 @@ export function createCalendarFooterStyles(ctx: CalendarViewStyleContext) {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: calc(11px * var(--font-scale));
       font-weight: bold;
       flex-shrink: 0;
       margin-top: 1px;
@@ -62,9 +62,8 @@ export function createCalendarFooterStyles(ctx: CalendarViewStyleContext) {
     yiBadge: css`
       background: #e6f4ea;
       color: #1e8e3e;
-      ${
-        isDark &&
-        css`
+      ${isDark &&
+      css`
         background: #1e3a2f;
         color: #81c784;
       `
@@ -73,9 +72,8 @@ export function createCalendarFooterStyles(ctx: CalendarViewStyleContext) {
     jiBadge: css`
       background: #fce8e6;
       color: #d93025;
-      ${
-        isDark &&
-        css`
+      ${isDark &&
+      css`
         background: #3c1e1e;
         color: #f28b82;
       `
@@ -99,11 +97,11 @@ export function createCalendarFooterStyles(ctx: CalendarViewStyleContext) {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 12px;
+      font-size: calc(12px * var(--font-scale));
       color: var(--text-sec);
     `,
     countdownIcon: css`
-      font-size: 14px;
+      font-size: calc(14px * var(--font-scale));
       opacity: 0.8;
     `,
   };

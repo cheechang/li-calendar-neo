@@ -6,6 +6,7 @@ export interface CalendarViewStyleProps {
   transparent?: boolean;
   isDark?: boolean;
   backgroundOpacity?: number;
+  fontSize?: number;
 }
 
 /** 由主题与透明选项推导出的纯值，供各样式块共用 */
@@ -23,4 +24,5 @@ export interface CalendarViewStyleContext extends CalendarThemeTokens {
   css: SerializeCSS;
   cx: ClassNamesUtil;
   isDark: boolean;
+  fontSize: number;
 }
