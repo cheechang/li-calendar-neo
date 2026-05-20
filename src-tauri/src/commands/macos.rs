@@ -11,10 +11,12 @@ use crate::app_runtime::macos::tray_calendar_icon::TrayDateIconStyle;
 use crate::app_runtime::tray_icon_px::TrayIconPx;
 use crate::AppState;
 use tauri::State;
+use tauri::{AppHandle, WebviewWindow};
+
 #[cfg(target_os = "macos")]
 use tauri::{
     window::{Effect, EffectState, EffectsBuilder},
-    AppHandle, Manager, WebviewWindow,
+    Manager,
 };
 
 /// 统一返回当前命令仅支持 Windows 的错误。
@@ -45,7 +47,7 @@ pub async fn get_macos_tray_title_template(state: State<'_, AppState>) -> Result
 
 #[tauri::command]
 pub async fn set_macos_tray_title_template(
-    #[cfg(target_os = "macos")] app_handle: AppHandle,
+    app_handle: AppHandle,
     state: State<'_, AppState>,
     template: String,
 ) -> Result<(), String> {
@@ -56,6 +58,7 @@ pub async fn set_macos_tray_title_template(
     }
     #[cfg(not(target_os = "macos"))]
     {
+        let _ = app_handle;
         let _ = state;
         let _ = template;
         windows_only_error()
@@ -81,7 +84,7 @@ pub async fn get_macos_tray_date_icon_style(state: State<'_, AppState>) -> Resul
 
 #[tauri::command]
 pub async fn set_macos_tray_date_icon_style(
-    #[cfg(target_os = "macos")] app_handle: AppHandle,
+    app_handle: AppHandle,
     state: State<'_, AppState>,
     style: String,
 ) -> Result<(), String> {
@@ -92,6 +95,7 @@ pub async fn set_macos_tray_date_icon_style(
     }
     #[cfg(not(target_os = "macos"))]
     {
+        let _ = app_handle;
         let _ = state;
         let _ = style;
         windows_only_error()
@@ -130,7 +134,7 @@ pub async fn get_macos_tray_bar_icon(state: State<'_, AppState>) -> Result<Strin
 
 #[tauri::command]
 pub async fn set_macos_tray_bar_icon(
-    #[cfg(target_os = "macos")] app_handle: AppHandle,
+    app_handle: AppHandle,
     state: State<'_, AppState>,
     icon: String,
 ) -> Result<(), String> {
@@ -141,6 +145,7 @@ pub async fn set_macos_tray_bar_icon(
     }
     #[cfg(not(target_os = "macos"))]
     {
+        let _ = app_handle;
         let _ = state;
         let _ = icon;
         windows_only_error()
@@ -149,7 +154,7 @@ pub async fn set_macos_tray_bar_icon(
 
 #[tauri::command]
 pub async fn set_macos_tray_icon_px(
-    #[cfg(target_os = "macos")] app_handle: AppHandle,
+    app_handle: AppHandle,
     state: State<'_, AppState>,
     width: u32,
     height: u32,
@@ -161,6 +166,7 @@ pub async fn set_macos_tray_icon_px(
     }
     #[cfg(not(target_os = "macos"))]
     {
+        let _ = app_handle;
         let _ = state;
         let _ = width;
         let _ = height;
@@ -249,8 +255,8 @@ pub async fn get_supported_window_effects() -> Result<Vec<String>, String> {
 
 #[tauri::command]
 pub async fn set_macos_vibrancy(
-    #[cfg(target_os = "macos")] app_handle: AppHandle,
-    #[cfg(target_os = "macos")] window: WebviewWindow,
+    app_handle: AppHandle,
+    window: WebviewWindow,
     enabled: bool,
     effect: Option<String>,
     window_label: Option<String>,
@@ -287,6 +293,8 @@ pub async fn set_macos_vibrancy(
     }
     #[cfg(not(target_os = "macos"))]
     {
+        let _ = app_handle;
+        let _ = window;
         let _ = enabled;
         let _ = effect;
         let _ = window_label;
