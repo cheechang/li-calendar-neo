@@ -62,8 +62,9 @@ export function createCalendarFooterStyles(ctx: CalendarViewStyleContext) {
     yiBadge: css`
       background: #e6f4ea;
       color: #1e8e3e;
-      ${isDark &&
-      css`
+      ${
+        isDark &&
+        css`
         background: #1e3a2f;
         color: #81c784;
       `
@@ -72,8 +73,9 @@ export function createCalendarFooterStyles(ctx: CalendarViewStyleContext) {
     jiBadge: css`
       background: #fce8e6;
       color: #d93025;
-      ${isDark &&
-      css`
+      ${
+        isDark &&
+        css`
         background: #3c1e1e;
         color: #f28b82;
       `
