@@ -180,6 +180,46 @@ export async function refreshHolidayData(url?: string): Promise<HolidayServiceSt
 /** 跨窗口同步监听器是否已设置 */
 let syncListenerSetup = false;
 
+/** 定时轮询计时器 */
+let pollTimer: ReturnType<typeof setInterval> | null = null;
+
+/** 定时轮询间隔（毫秒），默认 30 分钟 */
+const POLL_INTERVAL_MS = 30 * 60 * 1000;
+
+/** 启动定时轮询更新 */
+export function startHolidayDataPolling(): void {
+  if (pollTimer) {
+    console.log('[holidayService] 定时轮询已在运行中');
+    return;
+  }
+
+  console.log('[holidayService] 启动定时轮询，间隔:', POLL_INTERVAL_MS / 1000 / 60, '分钟');
+
+  pollTimer = setInterval(async () => {
+    const { holidayDataSource, holidayRemoteUrl } = useConfigSync.getState().data;
+
+    if (holidayDataSource === 'remote' && holidayRemoteUrl?.trim()) {
+      try {
+        const state = await refreshHolidayData(holidayRemoteUrl.trim());
+        if (state.lastResult) {
+          console.log('[holidayService] 定时更新成功:', state.lastResult);
+        }
+      } catch {
+        console.error('[holidayService] 定时更新失败');
+      }
+    }
+  }, POLL_INTERVAL_MS);
+}
+
+/** 停止定时轮询 */
+export function stopHolidayDataPolling(): void {
+  if (pollTimer) {
+    clearInterval(pollTimer);
+    pollTimer = null;
+    console.log('[holidayService] 已停止定时轮询');
+  }
+}
+
 /** 应用启动时初始化节假日数据 */
 export async function initializeHolidayData(): Promise<void> {
   const { holidayDataSource, holidayRemoteUrl, holidayDataCache } = useConfigSync.getState().data;
