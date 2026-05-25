@@ -26,16 +26,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create .nojekyll file
-        run: touch .nojekyll
-
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
+      - name: Build static files
+        run: |
+          mkdir -p build
+          cp holidays.json build/
+          touch build/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: 'build'
 
       - name: Deploy to GitHub Pages
         id: deployment
