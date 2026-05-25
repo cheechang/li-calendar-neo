@@ -26,6 +26,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Create .nojekyll file
+        run: touch .nojekyll
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
