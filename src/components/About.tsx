@@ -3,7 +3,7 @@ import { openUrl } from '@tauri-apps/plugin-opener';
 import { Button, Divider, Input, Modal, message, Space } from 'antd';
 import React, { useState } from 'react';
 import { initEnv, SOFT_INFO } from '../constants/env.ts';
-import { SOFT_URL } from '../constants/link';
+import { GITHUB_REPO_URL, SOFT_URL } from '../constants/link';
 import { EMAIL, QQ_GROUP, QQ_GROUP_LINK, SOFT_NAME } from '../constants/soft';
 import { DebugConst } from '../debugConst.ts';
 
@@ -26,6 +26,9 @@ const About: React.FC = () => {
         </div>
 
         <Space separator={<Divider orientation="vertical" />}>
+          <Button type="link" onClick={() => void openUrl(GITHUB_REPO_URL)}>
+            GitHub
+          </Button>
           <Button type="link" onClick={() => void openUrl(SOFT_URL)}>
             官网
           </Button>

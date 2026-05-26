@@ -19,24 +19,39 @@ const FontSizeForm: React.FC = () => {
   const { data: config } = useConfigSync();
 
   return (
-    <Form
-      labelCol={{ span: 5 }}
-      wrapperCol={{ span: 14 }}
-      labelAlign="left"
-      colon={false}
-      initialValues={config}
-      onValuesChange={syncValuesConfig}
-    >
-      <Form.Item name="fontSize" label="字体大小">
-        <Slider
-          marks={marks}
-          min={12}
-          max={24}
-          step={1}
-          tooltip={{ formatter: (value: number | undefined): string => `${value ?? 14}px` }}
-        />
-      </Form.Item>
-    </Form>
+    <div style={{ marginBottom: 24 }}>
+      <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16, color: 'var(--text-main)' }}>
+        字体设置
+      </h3>
+      <div
+        style={{
+          background: 'var(--bg-card)',
+          borderRadius: 12,
+          padding: '20px 24px',
+          border: '1px solid var(--border-color)',
+        }}
+      >
+        <Form
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 19 }}
+          labelAlign="left"
+          colon={false}
+          initialValues={config}
+          onValuesChange={syncValuesConfig}
+          style={{ marginBottom: 0 }}
+        >
+          <Form.Item name="fontSize" label="字体大小" style={{ marginBottom: 0 }}>
+            <Slider
+              marks={marks}
+              min={12}
+              max={24}
+              step={1}
+              tooltip={{ formatter: (value: number | undefined): string => `${value ?? 14}px` }}
+            />
+          </Form.Item>
+        </Form>
+      </div>
+    </div>
   );
 };
 

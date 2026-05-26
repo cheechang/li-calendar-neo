@@ -92,17 +92,28 @@ const Settings: React.FC<SettingsPageProps> = ({ mobileCalendarOnly = false }) =
   }
 
   return (
-    <Row style={{ width: '100%', height: '100%' }} wrap={false}>
-      <Col flex="180px">
+    <Row style={{ width: '100%', height: '100%', background: 'transparent' }} wrap={false}>
+      <Col
+        flex="200px"
+        style={{
+          background: 'var(--bg-secondary)',
+          borderRight: '1px solid var(--border-color)',
+          padding: '8px 0',
+        }}
+      >
         <Menu
           mode="vertical"
           selectedKeys={[activeTab]}
           onClick={(e) => setActiveTab(e.key as SettingsTab)}
           items={menuItems}
-          style={{ height: '100%', borderRight: 0 }}
+          style={{
+            height: '100%',
+            borderRight: 'none',
+            background: 'transparent',
+          }}
         />
       </Col>
-      <Col flex="auto" style={{ padding: 16, overflowY: 'auto', height: '100%' }}>
+      <Col flex="auto" style={{ padding: '20px 24px', overflowY: 'auto', height: '100%' }}>
         {renderContent()}
       </Col>
     </Row>

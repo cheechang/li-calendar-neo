@@ -15,6 +15,8 @@ export function createCalendarHeaderStyles(ctx: CalendarViewStyleContext) {
     headerContent: css`
       display: flex;
       flex-direction: column;
+      min-width: 0;
+      flex: 1;
     `,
     headerActions: css`
       display: flex;
@@ -47,12 +49,18 @@ export function createCalendarHeaderStyles(ctx: CalendarViewStyleContext) {
       line-height: 1.2;
       margin-bottom: 3px;
       color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     `,
     subtitle: css`
       font-size: calc(14px * var(--font-scale));
       line-height: 1.25;
       color: var(--text-sec);
       opacity: 0.9;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     `,
     festivalList: css`
       font-size: calc(13px * var(--font-scale));
