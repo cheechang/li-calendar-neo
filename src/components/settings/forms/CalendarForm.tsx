@@ -32,7 +32,11 @@ const CalendarForm: React.FC = () => {
           <Form.Item name="themeFollowSystem" label="自动跟随系统主题" style={{ marginBottom: 16 }}>
             <Switch />
           </Form.Item>
-          <Form.Item name="calendarFooterVisible" label="显示底部信息区域" style={{ marginBottom: 16 }}>
+          <Form.Item
+            name="calendarFooterVisible"
+            label="显示底部信息区域"
+            style={{ marginBottom: 16 }}
+          >
             <Switch />
           </Form.Item>
           <Form.Item name="footerFestivalVisible" label="显示节假日" style={{ marginBottom: 16 }}>
@@ -41,7 +45,11 @@ const CalendarForm: React.FC = () => {
           <Form.Item name="footerYiJiVisible" label="显示宜忌" style={{ marginBottom: 16 }}>
             <Switch />
           </Form.Item>
-          <Form.Item name="footerCountdownVisible" label="显示节日倒计时" style={{ marginBottom: 0 }}>
+          <Form.Item
+            name="footerCountdownVisible"
+            label="显示节日倒计时"
+            style={{ marginBottom: 0 }}
+          >
             <Switch />
           </Form.Item>
         </Form>
