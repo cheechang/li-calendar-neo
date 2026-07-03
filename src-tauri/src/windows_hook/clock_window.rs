@@ -68,6 +68,14 @@ pub fn refresh_clock_area_cache() {
     update_clock_area_cache();
 }
 
+/// 检查时钟区域缓存是否为空（尚未成功获取过时钟矩形）。
+pub fn is_clock_area_cache_empty() -> bool {
+    let Ok(cache) = CLOCK_AREA_RECT_CACHE.read() else {
+        return true;
+    };
+    cache.is_none()
+}
+
 /// 供 [`super::mouse_hook`] 使用：判断 `(x, y)` 是否落在缓存的时钟矩形外扩 2 像素内。
 ///
 /// * `x` / `y` - 屏幕物理像素坐标。

@@ -10,7 +10,7 @@ use windows::Win32::System::Com::*;
 use windows::Win32::System::LibraryLoader::*;
 use windows::Win32::UI::WindowsAndMessaging::*;
 
-use super::clock_window::{find_clock_window, is_mouse_in_clock_area, update_clock_area_cache};
+use super::clock_window::{find_clock_window, is_clock_area_cache_empty, is_mouse_in_clock_area, update_clock_area_cache};
 use super::registry_clock::disable_custom_clock;
 use super::state::{EVENT_SENDER, HOOK_HANDLE, IS_MENU_OPEN, TASKBAR_WIDGET_ENABLED};
 use super::types::{ClickEvent, MouseButton};
@@ -123,6 +123,8 @@ pub fn start_hook_message_thread() {
                         println!("✅ 已在专用消息泵线程上安装鼠标钩子");
                         // 初始化时做一次 UIA 取矩形；钩子回调内只读缓存，不得在此线程之外重复轮询刷新。
                         update_clock_area_cache();
+                        // 开机启动时任务栏时钟控件可能尚未就绪，启动后台重试确保缓存最终被填充。
+                        spawn_clock_area_cache_retry();
                     }
                     Err(e) => {
                         eprintln!("❌ 安装鼠标钩子失败: {:?}", e);
@@ -140,6 +142,34 @@ pub fn start_hook_message_thread() {
                 let _ = TranslateMessage(&msg);
                 DispatchMessageW(&msg);
             }
+        }
+    });
+}
+
+/// 启动后台重试线程，确保时钟区域缓存最终被填充。
+///
+/// 开机后任务栏时钟控件可能尚未初始化完成，首次 UIA 获取会失败。
+/// 本函数在独立线程中以递增延迟重试，最多重试 5 次（共等待约 15 秒）。
+fn spawn_clock_area_cache_retry() {
+    thread::spawn(|| {
+        unsafe {
+            let _ = CoInitializeEx(None, COINIT_MULTITHREADED);
+        }
+        // 重试间隔（毫秒）：快速重试 3 次后拉长间隔
+        let retry_delays_ms: [u64; 5] = [500, 1000, 2000, 4000, 8000];
+        for delay_ms in retry_delays_ms {
+            std::thread::sleep(std::time::Duration::from_millis(delay_ms));
+            if !is_clock_area_cache_empty() {
+                println!("✅ 时钟区域缓存已就绪，停止重试");
+                return;
+            }
+            println!("⚠️ 时钟区域缓存为空，{delay_ms}ms 后重试 UIA 获取…");
+            update_clock_area_cache();
+        }
+        if is_clock_area_cache_empty() {
+            eprintln!("⚠️ 时钟区域缓存重试耗尽仍未获取到时钟矩形，点击拦截可能失效");
+        } else {
+            println!("✅ 时钟区域缓存重试成功");
         }
     });
 }
