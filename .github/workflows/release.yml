@@ -48,6 +48,57 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        id: changelog
+        shell: bash
+        run: |
+          # 获取当前标签和前一个标签
+          CURRENT_TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          PREV_TAG=$(git tag -l 'v*' --sort=-version:refname | grep -v "$CURRENT_TAG" | head -1)
+
+          if [ -n "$PREV_TAG" ]; then
+            LOG_RANGE="${PREV_TAG}..${CURRENT_TAG}"
+          else
+            LOG_RANGE="${CURRENT_TAG}"
+          fi
+
+          echo "## 更新内容" > changelog.md
+          echo "" >> changelog.md
+
+          # 按类型分组提取提交
+          FEAT=$(git log $LOG_RANGE --pretty=format:"- %s" | grep -i "^[\-]* *feat" | sed 's/^[- ]*feat[:/ ]*//i' || true)
+          FIX=$(git log $LOG_RANGE --pretty=format:"- %s" | grep -i "^[\-]* *fix" | sed 's/^[- ]*fix[:/ ]*//i' || true)
+          OTHER=$(git log $LOG_RANGE --pretty=format:"- %s" | grep -iv "^[\-]* *\(feat\|fix\)" || true)
+
+          if [ -n "$FEAT" ]; then
+            echo "### ✨ 新功能" >> changelog.md
+            echo "$FEAT" >> changelog.md
+            echo "" >> changelog.md
+          fi
+          if [ -n "$FIX" ]; then
+            echo "### 🐛 修复" >> changelog.md
+            echo "$FIX" >> changelog.md
+            echo "" >> changelog.md
+          fi
+          if [ -n "$OTHER" ] && [ -z "$FEAT" ] && [ -z "$FIX" ]; then
+            echo "$OTHER" >> changelog.md
+            echo "" >> changelog.md
+          fi
+
+          echo "" >> changelog.md
+          echo "## 安装包" >> changelog.md
+          echo "- **Windows**: 下载 \`.exe\` 安装程序" >> changelog.md
+          echo "- **macOS**: 下载 \`.dmg\` 磁盘映像（支持 Intel 和 Apple Silicon）" >> changelog.md
+          echo "- **Linux**: 下载 \`.deb\` 或 \`.AppImage\`" >> changelog.md
+
+          # 将多行内容输出为 GitHub Actions 变量
+          CHANGELOG_CONTENT=$(cat changelog.md)
+          echo "body<<CHANGELOG_EOF" >> "$GITHUB_OUTPUT"
+          echo "$CHANGELOG_CONTENT" >> "$GITHUB_OUTPUT"
+          echo "CHANGELOG_EOF" >> "$GITHUB_OUTPUT"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -81,14 +132,7 @@ jobs:
         with:
           tagName: ${{ github.event.inputs.tag || github.ref_name }}
           releaseName: '松鼠日历 ${{ github.event.inputs.tag || github.ref_name }}'
-          releaseBody: |
-            ## 更新内容
-            请在此补充版本更新说明。
-
-            ## 安装包
-            - **Windows**: 下载 `.exe` 安装程序
-            - **macOS**: 下载 `.dmg` 磁盘映像（支持 Intel 和 Apple Silicon）
-            - **Linux**: 下载 `.deb` 或 `.AppImage`
+          releaseBody: ${{ steps.changelog.outputs.body }}
           releaseDraft: ${{ github.event.inputs.draft == 'true' }}
           prerelease: ${{ github.event.inputs.prerelease == 'true' }}
           args: ${{ matrix.args }}
