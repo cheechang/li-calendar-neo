@@ -32,6 +32,12 @@ const CalendarForm: React.FC = () => {
           <Form.Item name="themeFollowSystem" label="自动跟随系统主题" style={{ marginBottom: 16 }}>
             <Switch />
           </Form.Item>
+          <Form.Item name="showOverflowDates" label="显示跨越日期" style={{ marginBottom: 16 }}>
+            <Switch />
+          </Form.Item>
+          <Form.Item name="showWeekNumbers" label="显示周数" style={{ marginBottom: 16 }}>
+            <Switch />
+          </Form.Item>
           <Form.Item
             name="calendarFooterVisible"
             label="显示底部信息区域"

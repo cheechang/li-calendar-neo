@@ -11,6 +11,10 @@ export interface CalendarMonthNavProps {
   styles: CalendarViewClassNames;
   /** 当前面板显示的月份（与网格首行对齐） */
   panelMonth: Dayjs;
+  /** 当天日期，用于判断是否隐藏「今」按钮 */
+  calendarToday: Dayjs;
+  /** 当前选中的日期，与 calendarToday 比较决定是否显示「今」按钮 */
+  selectedDate: Dayjs;
   /** 选中今天并跳到当月 */
   onGoToToday: () => void;
   /** 上一个月 */
@@ -24,7 +28,9 @@ export interface CalendarMonthNavProps {
  */
 function CalendarMonthNav(): ReactElement {
   const { navProps } = useCalendarViewContext();
-  const { styles, panelMonth, onGoToToday, onPrevMonth, onNextMonth } = navProps;
+  const { styles, panelMonth, calendarToday, selectedDate, onGoToToday, onPrevMonth, onNextMonth } =
+    navProps;
+  const isTodaySelected = selectedDate.isSame(calendarToday, 'date');
 
   return (
     <div className={styles.calendarNav}>
@@ -32,18 +38,20 @@ function CalendarMonthNav(): ReactElement {
         {panelMonth.year()}年{panelMonth.month() + 1}月
       </div>
       <div className={styles.navBtns}>
-        <Tooltip title="回到今天">
-          <Button
-            autoInsertSpace={false}
-            className={classNames(styles.navBtn, styles.todayBtn)}
-            size="small"
-            type="text"
-            shape="circle"
-            onClick={onGoToToday}
-          >
-            今
-          </Button>
-        </Tooltip>
+        {!isTodaySelected && (
+          <Tooltip title="回到今天">
+            <Button
+              autoInsertSpace={false}
+              className={classNames(styles.navBtn, styles.todayBtn)}
+              size="small"
+              type="text"
+              shape="circle"
+              onClick={onGoToToday}
+            >
+              今
+            </Button>
+          </Tooltip>
+        )}
         <Tooltip title="上个月">
           <Button
             className={styles.navBtn}

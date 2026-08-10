@@ -76,6 +76,10 @@ export interface SystemConfig {
   calendarPinned: boolean;
   /** 日历界面字体大小（px） */
   fontSize: number;
+  /** 显示跨越日期（其它月份的灰色日期） */
+  showOverflowDates: boolean;
+  /** 显示周数列 */
+  showWeekNumbers: boolean;
 }
 
 export interface CalendarFooterVisible {

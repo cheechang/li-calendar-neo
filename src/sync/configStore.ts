@@ -16,6 +16,8 @@ const systemConfigDefaults = {
   themeFollowSystem: false,
   calendarPinned: false,
   fontSize: 14,
+  showOverflowDates: true,
+  showWeekNumbers: false,
 } satisfies SystemConfig;
 
 const calendarFooterVisibleDefaults = {

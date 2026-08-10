@@ -17,7 +17,6 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
   return {
     calendarGrid: css`
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
       gap: 1px;
       justify-items: center;
       align-items: center;
@@ -29,6 +28,22 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
       color: var(--text-main);
       padding-bottom: 12px;
       height: 24px;
+    `,
+    weekNumberHeader: css`
+      height: 24px;
+    `,
+    weekNumberCell: css`
+      font-size: calc(10px * var(--font-scale));
+      color: ${isDark ? '#666666' : '#bfbfbf'};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    `,
+    cellPlaceholder: css`
+      width: calc(40px + (var(--font-size-base) - 14px) * 1.5);
+      height: calc(40px + (var(--font-size-base) - 14px) * 1.5);
     `,
     cell: css`
       width: calc(40px + (var(--font-size-base) - 14px) * 1.5);

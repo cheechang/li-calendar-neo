@@ -109,6 +109,8 @@ export function useCalendarViewModel({
     frontendWindowEffectEnabled,
     frontendWindowTransparency,
     fontSize,
+    showOverflowDates,
+    showWeekNumbers,
   } = config;
   /** 页脚总开关。 */
   const showFooter = calendarFooterVisible;
@@ -321,6 +323,8 @@ export function useCalendarViewModel({
   const navProps: CalendarMonthNavProps = {
     styles,
     panelMonth,
+    calendarToday,
+    selectedDate,
     onGoToToday: handleGoToToday,
     onPrevMonth: handlePrevMonth,
     onNextMonth: handleNextMonth,
@@ -330,6 +334,8 @@ export function useCalendarViewModel({
     styles,
     cellModels,
     onSelectDate: handleSelectDate,
+    showOverflowDates,
+    showWeekNumbers,
   };
 
   const footerProps: CalendarFooterProps | null = hasFooterContent
