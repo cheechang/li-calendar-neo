@@ -37,8 +37,13 @@ function CalendarMonthGrid(): ReactElement {
     <div className={styles.calendarGrid} style={{ gridTemplateColumns: gridColumns }}>
       {/* 表头：可选周数空位 + 星期 */}
       {showWeekNumbers && <div className={styles.weekNumberHeader} />}
-      {weekdays.map((day) => (
-        <div className={styles.weekday} key={day}>
+      {weekdays.map((day, index) => (
+        <div
+          className={classNames(styles.weekday, {
+            [styles.weekdayWeekend]: index >= 5,
+          })}
+          key={day}
+        >
           {day}
         </div>
       ))}
@@ -77,6 +82,7 @@ function CalendarMonthGrid(): ReactElement {
                       [styles.otherMonth]: cell.isOtherMonth,
                       [styles.today]: cell.isToday,
                       [styles.selected]: cell.isSelected && !cell.isToday,
+                      [styles.weekend]: cell.date.day() === 0 || cell.date.day() === 6,
                     })}
                     onClick={() => onSelectDate(cell.date)}
                   >

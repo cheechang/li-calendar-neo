@@ -13,6 +13,24 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
     color: ${isDark ? '#81c784' : '#2e7d32'};
     font-weight: 600;
   `;
+  const today = css`
+    background: var(--accent);
+    color: ${isDark ? '#000000' : '#ffffff'};
+
+    .${cx(lunar)} {
+      color: ${isDark ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.9)'};
+    }
+
+    .${cx(term)} {
+      color: ${isDark ? '#000000' : '#ffffff'};
+    }
+
+    /* 覆盖 .cell 的灰底 hover：保持强调色底，整体略提亮作为反馈（不叠灰底） */
+    &:hover {
+      background: var(--accent);
+      filter: brightness(1.07);
+    }
+  `;
 
   return {
     calendarGrid: css`
@@ -28,6 +46,10 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
       color: var(--text-main);
       padding-bottom: 12px;
       height: 24px;
+    `,
+    weekdayWeekend: css`
+      color: ${isDark ? '#64b5f6' : '#1976d2'};
+      font-weight: 600;
     `,
     weekNumberHeader: css`
       height: 24px;
@@ -68,24 +90,7 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
     otherMonth: css`
       color: ${isDark ? '#666666' : '#bfbfbf'};
     `,
-    today: css`
-      background: var(--accent);
-      color: ${isDark ? '#000000' : '#ffffff'};
-
-      .${cx(lunar)} {
-        color: ${isDark ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.9)'};
-      }
-
-      .${cx(term)} {
-        color: ${isDark ? '#000000' : '#ffffff'};
-      }
-
-      /* 覆盖 .cell 的灰底 hover：保持强调色底，整体略提亮作为反馈（不叠灰底） */
-      &:hover {
-        background: var(--accent);
-        filter: brightness(1.07);
-      }
-    `,
+    today,
     selected: css`
       box-shadow: inset 0 0 0 1px var(--accent);
       border-radius: 50%;
@@ -94,6 +99,19 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
       font-size: calc(13px * var(--font-scale));
       font-weight: 400;
       line-height: 1.1;
+    `,
+    weekend: css`
+      .${cx(lunar)} {
+        color: ${isDark ? '#90caf9' : '#42a5f5'};
+      }
+
+      &.${cx(today)} {
+        color: ${isDark ? '#000000' : '#ffffff'};
+
+        .${cx(lunar)} {
+          color: ${isDark ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.9)'};
+        }
+      }
     `,
     lunar,
     term,
