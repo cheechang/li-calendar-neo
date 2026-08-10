@@ -2,16 +2,35 @@ import type { Dayjs } from 'dayjs';
 import { Solar } from 'lunar-typescript';
 
 /**
- * 收集某日阳历、农历的主要节日名称（不含其它小众节日接口）。
+ * 需要从 `Lunar.getOtherFestivals()` 中额外纳入的重要传统节日。
+ * 库内默认仅展示 FESTIVAL 级别，这些传统节日被归为 OTHER_FESTIVAL，
+ * 但对用户而言具有较高认知度，因此选择性补充。
+ */
+const EXTRA_TRADITIONAL_FESTIVALS = new Set([
+  '上巳节', // 农历三月初三
+  '寒食节', // 清明前一天（动态计算）
+  '中元节', // 农历七月十五
+  '下元节', // 农历十月十五
+]);
+
+/**
+ * 收集某日阳历、农历的主要节日名称，并选择性纳入重要传统节日。
  */
 export function getAllFestivals(date: Dayjs): string[] {
   const solar = Solar.fromDate(date.toDate());
   const lunar = solar.getLunar();
   const festivals: string[] = [];
 
-  // 仅获取主要节日，排除 getOtherFestivals() (小众/次要节日)
+  // 阳历节日 + 农历主要节日
   festivals.push(...solar.getFestivals());
   festivals.push(...lunar.getFestivals());
+
+  // 补充重要传统节日（来自 OTHER_FESTIVAL，排除小众纪念日）
+  for (const name of lunar.getOtherFestivals()) {
+    if (EXTRA_TRADITIONAL_FESTIVALS.has(name)) {
+      festivals.push(name);
+    }
+  }
 
   return festivals;
 }
