@@ -80,6 +80,10 @@ export interface SystemConfig {
   showOverflowDates: boolean;
   /** 显示周数列 */
   showWeekNumbers: boolean;
+  /** 周日作为一周的第一天（默认周一） */
+  weekStartsOnSunday: boolean;
+  /** 鼠标滚轮按周滚动日历面板 */
+  wheelScrollEnabled: boolean;
 }
 
 export interface CalendarFooterVisible {

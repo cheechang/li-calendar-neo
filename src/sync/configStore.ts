@@ -15,9 +15,11 @@ const systemConfigDefaults = {
   theme: 'light',
   themeFollowSystem: false,
   calendarPinned: false,
-  fontSize: 14,
+  fontSize: 15,
   showOverflowDates: true,
   showWeekNumbers: false,
+  weekStartsOnSunday: false,
+  wheelScrollEnabled: true,
 } satisfies SystemConfig;
 
 const calendarFooterVisibleDefaults = {

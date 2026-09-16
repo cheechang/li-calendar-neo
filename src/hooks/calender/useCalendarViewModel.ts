@@ -18,7 +18,11 @@ import { openFestivalBaike } from '../../http/baike.ts';
 import { useCalendarViewStyles } from '../../styles/useCalendarViewStyles.ts';
 import { useConfigSync } from '../../sync/configStore.ts';
 import { getCalendarCellViewModel } from '../../utils/calendar/calendarCellModel.ts';
-import { getSelectedFestivalsWithJieQi } from '../../utils/calendar/calendarFestivals.ts';
+import {
+  getSelectedFestivalsWithJieQi,
+  WEEKDAYS_MONDAY_FIRST,
+  WEEKDAYS_SUNDAY_FIRST,
+} from '../../utils/calendar/calendarFestivals.ts';
 import { buildMonthCells } from '../../utils/calendar/calendarMonthUtils.ts';
 import { isWindows } from '../../utils/platform.ts';
 import {
@@ -111,6 +115,8 @@ export function useCalendarViewModel({
     fontSize,
     showOverflowDates,
     showWeekNumbers,
+    weekStartsOnSunday,
+    wheelScrollEnabled,
   } = config;
   /** 页脚总开关。 */
   const showFooter = calendarFooterVisible;
@@ -189,6 +195,11 @@ export function useCalendarViewModel({
   /** 左右滑动切换月份的触摸事件处理器。 */
   const { handleTouchStart, handleTouchEnd } = useCalendarSwipeMonth(setPanelMonth);
 
+  /** 周起始模式：'monday' | 'sunday' */
+  const weekStart: 'monday' | 'sunday' = weekStartsOnSunday ? 'sunday' : 'monday';
+  /** 当前周起始对应的表头星期数组 */
+  const activeWeekdays = weekStartsOnSunday ? WEEKDAYS_SUNDAY_FIRST : WEEKDAYS_MONDAY_FIRST;
+
   /** 打开节日百科详情页。 */
   const handleFestivalClick = (name: string): void => {
     void openFestivalBaike(name);
@@ -237,8 +248,30 @@ export function useCalendarViewModel({
   /** 最近的节假日倒计时信息。 */
   const holidayCountdown = useHolidayCountdown(calendarToday);
 
+  /** 鼠标滚轮按周滚动日历面板（与 Windows 原生右下角弹窗日历行为一致）。 */
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || !wheelScrollEnabled) return;
+
+    let lastWheelTs = 0;
+    const handleWheel = (e: WheelEvent): void => {
+      e.preventDefault();
+      const now = Date.now();
+      if (now - lastWheelTs < 150) return; // 节流：避免连续滚动时切换过快
+      lastWheelTs = now;
+      if (e.deltaY > 0) {
+        setPanelMonth((m) => m.subtract(1, 'week'));
+      } else if (e.deltaY < 0) {
+        setPanelMonth((m) => m.add(1, 'week'));
+      }
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, [wheelScrollEnabled, containerRef]);
+
   // 月网格：先算 42 个公历日，再为每格生成展示模型（农历、角标、tooltip）
-  const monthCells = buildMonthCells(panelMonth);
+  const monthCells = buildMonthCells(panelMonth, weekStart);
   /** 把日期数组进一步映射为视图层可直接消费的单元格模型。 */
   const cellModels = monthCells.map((date) =>
     getCalendarCellViewModel(date, panelMonth, selectedDate, calendarToday),
@@ -333,6 +366,7 @@ export function useCalendarViewModel({
   const gridProps: CalendarMonthGridProps = {
     styles,
     cellModels,
+    weekdays: activeWeekdays,
     onSelectDate: handleSelectDate,
     showOverflowDates,
     showWeekNumbers,

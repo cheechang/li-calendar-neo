@@ -117,25 +117,27 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
     term,
     tag: css`
       position: absolute;
-      top: 4px;
-      right: 4px;
-      font-size: calc(8px * var(--font-scale));
-      width: 12px;
-      height: 12px;
+      top: 2px;
+      right: 2px;
+      font-size: calc(10px * var(--font-scale));
+      min-width: 16px;
+      min-height: 16px;
+      padding: 0 2px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
       z-index: 1;
-      border-radius: 50%;
+      border-radius: 4px;
+      line-height: 1;
     `,
     tagWork: css`
-      background: ${isDark ? '#4d2d2f' : '#fde7e9'};
-      color: ${isDark ? '#ff9999' : '#a80000'};
+      background: ${isDark ? '#5c3335' : '#fde7e9'};
+      color: ${isDark ? '#ffb3b3' : '#a80000'};
     `,
     tagRest: css`
-      background: ${isDark ? '#2d4d2d' : '#dff6dd'};
-      color: ${isDark ? '#99ff99' : '#107c10'};
+      background: ${isDark ? '#335c33' : '#dff6dd'};
+      color: ${isDark ? '#b3ffb3' : '#107c10'};
     `,
   };
 }

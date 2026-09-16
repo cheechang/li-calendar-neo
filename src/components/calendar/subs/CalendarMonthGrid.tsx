@@ -5,7 +5,6 @@ import type { ReactElement } from 'react';
 import { useCalendarViewContext } from '../../../hooks/calender/CalendarViewContext.tsx';
 import type { CalendarViewClassNames } from '../../../styles/useCalendarViewStyles.ts';
 import type { CalendarCellViewModel } from '../../../utils/calendar/calendarCellModel.ts';
-import { weekdays } from '../../../utils/calendar/calendarFestivals.ts';
 
 /** 一行 7 格，共 6 行 */
 const CELLS_PER_ROW = 7;
@@ -15,6 +14,8 @@ export interface CalendarMonthGridProps {
   styles: CalendarViewClassNames;
   /** 已由逻辑层算好的 42 格展示模型 */
   cellModels: CalendarCellViewModel[];
+  /** 当前周起始对应的星期表头数组 */
+  weekdays: string[];
   /** 用户点击某一格时回传该格公历日期 */
   onSelectDate: (date: Dayjs) => void;
   /** 是否显示其它月份的灰色日期 */
@@ -28,7 +29,8 @@ export interface CalendarMonthGridProps {
  */
 function CalendarMonthGrid(): ReactElement {
   const { gridProps } = useCalendarViewContext();
-  const { styles, cellModels, onSelectDate, showOverflowDates, showWeekNumbers } = gridProps;
+  const { styles, cellModels, weekdays, onSelectDate, showOverflowDates, showWeekNumbers } =
+    gridProps;
 
   /** 动态网格列：有周数时左侧多一列 */
   const gridColumns = showWeekNumbers ? 'auto repeat(7, 1fr)' : 'repeat(7, 1fr)';
@@ -40,9 +42,9 @@ function CalendarMonthGrid(): ReactElement {
       {weekdays.map((day, index) => (
         <div
           className={classNames(styles.weekday, {
-            [styles.weekdayWeekend]: index >= 5,
+            [styles.weekdayWeekend]: day === '六' || day === '日',
           })}
-          key={day}
+          key={`${index}-${day}`}
         >
           {day}
         </div>

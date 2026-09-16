@@ -39,6 +39,20 @@ const CalendarForm: React.FC = () => {
             <Switch />
           </Form.Item>
           <Form.Item
+            name="weekStartsOnSunday"
+            label="周日作为一周起始"
+            style={{ marginBottom: 16 }}
+          >
+            <Switch />
+          </Form.Item>
+          <Form.Item
+            name="wheelScrollEnabled"
+            label="鼠标滚轮按周滚动"
+            style={{ marginBottom: 16 }}
+          >
+            <Switch />
+          </Form.Item>
+          <Form.Item
             name="calendarFooterVisible"
             label="显示底部信息区域"
             style={{ marginBottom: 16 }}

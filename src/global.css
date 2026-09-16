@@ -8,6 +8,10 @@ body,
   background: transparent;
   user-select: none;
   -webkit-user-select: none;
+  /* WebView 字体抗锯齿：缓解 Tauri WebView 下字体发虚 / 模糊问题 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 input,

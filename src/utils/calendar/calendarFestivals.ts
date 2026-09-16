@@ -49,8 +49,14 @@ export function getSelectedFestivalsWithJieQi(selectedDate: Dayjs): string[] {
   return list;
 }
 
-/** 表头星期行：周一至周日单字 */
-export const weekdays = ['一', '二', '三', '四', '五', '六', '日'];
+/** 表头星期行：周一至周日单字（默认） */
+export const WEEKDAYS_MONDAY_FIRST = ['一', '二', '三', '四', '五', '六', '日'];
+
+/** 表头星期行：周日至周六单字（周日开头） */
+export const WEEKDAYS_SUNDAY_FIRST = ['日', '一', '二', '三', '四', '五', '六'];
+
+/** @deprecated 兼容旧引用，请使用 WEEKDAYS_MONDAY_FIRST */
+export const weekdays = WEEKDAYS_MONDAY_FIRST;
 
 /** 顶栏完整星期名称，索引与 dayjs().day() 一致（0=周日） */
 export const weekdayNames = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
