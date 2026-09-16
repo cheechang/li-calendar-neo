@@ -30,7 +30,8 @@ function CalendarMonthNav(): ReactElement {
   const { navProps } = useCalendarViewContext();
   const { styles, panelMonth, calendarToday, selectedDate, onGoToToday, onPrevMonth, onNextMonth } =
     navProps;
-  const isTodaySelected = selectedDate.isSame(calendarToday, 'date');
+  const showTodayBtn =
+    !selectedDate.isSame(calendarToday, 'date') || !panelMonth.isSame(calendarToday, 'month');
 
   return (
     <div className={styles.calendarNav}>
@@ -38,7 +39,7 @@ function CalendarMonthNav(): ReactElement {
         {panelMonth.year()}年{panelMonth.month() + 1}月
       </div>
       <div className={styles.navBtns}>
-        {!isTodaySelected && (
+        {showTodayBtn && (
           <Tooltip title="回到今天">
             <Button
               autoInsertSpace={false}

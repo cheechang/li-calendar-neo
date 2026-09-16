@@ -31,7 +31,7 @@
   },
   "bundle": {
     "active": true,
-    "createUpdaterArtifacts": false,
+    "createUpdaterArtifacts": true,
     "publisher": "softsoft.pro",
     "category": "Utility",
     "shortDescription": "松鼠日历",
@@ -43,5 +43,13 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
+  },
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://github.com/cheechang/li-calendar-neo/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEY3REVERDlGQzA5ODdEQzIKUldUQ2ZaakFuOTNlOTdmOTZGRkprVjY5eVVpY2t0c3ZNL28zaXNtNEUyMVdCbm9XL3FuWEVDWFkK"
+    }
   }
 }

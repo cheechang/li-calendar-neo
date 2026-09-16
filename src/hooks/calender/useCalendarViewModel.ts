@@ -248,26 +248,41 @@ export function useCalendarViewModel({
   /** 最近的节假日倒计时信息。 */
   const holidayCountdown = useHolidayCountdown(calendarToday);
 
-  /** 鼠标滚轮按周滚动日历面板（与 Windows 原生右下角弹窗日历行为一致）。 */
+  /** 鼠标滚轮按月滚动日历面板（与 Windows 11 原生日历行为一致）。 */
   useEffect(() => {
     const el = containerRef.current;
     if (!el || !wheelScrollEnabled) return;
 
-    let lastWheelTs = 0;
+    /** 累加 deltaY，超过阈值才触发一次切换（兼容高精度触控板与鼠标滚轮） */
+    let accumulatedDelta = 0;
+    /** 触发切换的最小 deltaY 累加阈值（px），过滤触控板微小抖动 */
+    const THRESHOLD = 40;
+    /** 滚动冷却：两次触发之间的最小间隔 ms */
+    let cooldown = false;
+
     const handleWheel = (e: WheelEvent): void => {
       e.preventDefault();
-      const now = Date.now();
-      if (now - lastWheelTs < 150) return; // 节流：避免连续滚动时切换过快
-      lastWheelTs = now;
-      if (e.deltaY > 0) {
-        setPanelMonth((m) => m.subtract(1, 'week'));
-      } else if (e.deltaY < 0) {
-        setPanelMonth((m) => m.add(1, 'week'));
+      accumulatedDelta += e.deltaY;
+
+      if (cooldown) return;
+      if (Math.abs(accumulatedDelta) < THRESHOLD) return;
+
+      cooldown = true;
+      if (accumulatedDelta > 0) {
+        setPanelMonth((m) => m.subtract(1, 'month'));
+      } else {
+        setPanelMonth((m) => m.add(1, 'month'));
       }
+      accumulatedDelta = 0;
+      setTimeout(() => {
+        cooldown = false;
+      }, 150);
     };
 
     el.addEventListener('wheel', handleWheel, { passive: false });
-    return () => el.removeEventListener('wheel', handleWheel);
+    return () => {
+      el.removeEventListener('wheel', handleWheel);
+    };
   }, [wheelScrollEnabled, containerRef]);
 
   // 月网格：先算 42 个公历日，再为每格生成展示模型（农历、角标、tooltip）
@@ -370,6 +385,7 @@ export function useCalendarViewModel({
     onSelectDate: handleSelectDate,
     showOverflowDates,
     showWeekNumbers,
+    panelMonth,
   };
 
   const footerProps: CalendarFooterProps | null = hasFooterContent

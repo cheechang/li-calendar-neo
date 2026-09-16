@@ -7,6 +7,7 @@ import type {
   ConfigWindows,
   HolidayDataConfig,
   SystemConfig,
+  UpdateConfig,
 } from './type/configTypes.ts';
 
 /** `satisfies`：字面量须符合对应类型，写错字符串会在编译期报错，无需 `as` 断言 */
@@ -58,12 +59,19 @@ const holidayDataDefaults = {
   holidayDataCache: [],
 } satisfies HolidayDataConfig;
 
+const updateConfigDefaults = {
+  autoCheckUpdate: true,
+  updateCheckFrequency: 'weekly',
+  lastUpdateCheck: '',
+} satisfies UpdateConfig;
+
 const configDefaults: ConfigItem = {
   ...systemConfigDefaults,
   ...calendarFooterVisibleDefaults,
   ...configWindowsDefaults,
   ...configMacosDefaults,
   ...holidayDataDefaults,
+  ...updateConfigDefaults,
 };
 
 export const useConfigSync = createSync<ConfigItem>('liConfig', configDefaults);

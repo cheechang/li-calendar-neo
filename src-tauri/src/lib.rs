@@ -95,6 +95,8 @@ pub fn run() {
     let build_result = tauri::Builder::default()
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_os::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_single_instance::init(|app, _, _cwd| {
             // 单实例回调：如果尝试打开新实例，则聚焦现有窗口
             app_runtime::main_window::focus_first_webview_window(app);

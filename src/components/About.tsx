@@ -27,11 +27,57 @@ const About: React.FC = () => {
     void getVersion().then(setCurrentVersion);
   }, []);
 
-  /** 检查更新 */
+  /** 检查更新（优先 updater 插件，回退 GitHub API） */
   const handleCheckUpdate = async () => {
     if (!currentVersion) return;
     setChecking(true);
     try {
+      /* updater 插件：下载→安装→重启 */
+      try {
+        const { check } = await import('@tauri-apps/plugin-updater');
+        const update = await check();
+        if (update?.available) {
+          Modal.confirm({
+            title: `发现新版本 v${update.version}`,
+            content: (
+              <div style={{ whiteSpace: 'pre-wrap', maxHeight: 320, overflowY: 'auto' }}>
+                {update.body || '暂无更新说明'}
+              </div>
+            ),
+            okText: '立即更新',
+            cancelText: '稍后',
+            width: 520,
+            onOk: async () => {
+              try {
+                await update.downloadAndInstall();
+                Modal.info({
+                  title: '更新已安装',
+                  content: '新版本已安装完成，需要重启应用以生效。',
+                  okText: '立即重启',
+                  onOk: async () => {
+                    const { relaunch } = await import('@tauri-apps/plugin-process');
+                    await relaunch();
+                  },
+                });
+              } catch (err) {
+                messageApi.error(`更新失败：${err instanceof Error ? err.message : String(err)}`);
+              }
+            },
+          });
+          return;
+        }
+        // 已是最新
+        setUpdateResult({
+          hasUpdate: false,
+          release: { tagName: '', version: '', body: '', htmlUrl: '' },
+          currentVersion,
+        });
+        return;
+      } catch {
+        // updater 不可用 → 回退
+      }
+
+      /* GitHub API 回退 */
       const result = await checkForUpdate(currentVersion);
       setUpdateResult(result);
     } catch {

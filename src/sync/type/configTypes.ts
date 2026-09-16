@@ -59,12 +59,15 @@ export type MacosTrayDateIconStyle = 'filled' | 'outlined';
  */
 export type MacosTrayBarIconKind = 'date' | 'calendar';
 
+export type UpdateCheckFrequency = 'daily' | 'weekly' | 'monthly' | 'yearly';
+
 export interface ConfigItem
   extends SystemConfig,
     CalendarFooterVisible,
     ConfigWindows,
     ConfigMacos,
-    HolidayDataConfig {}
+    HolidayDataConfig,
+    UpdateConfig {}
 
 export interface SystemConfig {
   // 开机自启动
@@ -138,4 +141,13 @@ export interface ConfigMacos {
   macosTrayIconWidth: number;
   /** 菜单栏日期图标位图高度（像素），默认 36（21×18 @2×，与 tray 约 18pt 槽 + LunarBar 15pt 图高一致） */
   macosTrayIconHeight: number;
+}
+
+export interface UpdateConfig {
+  /** 是否开启自动检测更新 */
+  autoCheckUpdate: boolean;
+  /** 检测更新周期 */
+  updateCheckFrequency: UpdateCheckFrequency;
+  /** 上次检测更新的 ISO 时间戳 */
+  lastUpdateCheck: string;
 }

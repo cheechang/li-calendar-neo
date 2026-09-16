@@ -9,6 +9,7 @@ import MobileWindow from './windows/mobile/MobileWindow.tsx';
 import PopupWindow from './windows/PopupWindow.tsx';
 import './global.css';
 import { useWindowsTrayClockBootstrap } from './hooks/settings/useWindowsTrayClockBootstrap.ts';
+import { useAutoUpdate } from './hooks/useAutoUpdate.tsx';
 import { initializeHolidayData, startHolidayDataPolling } from './services/holidayService.ts';
 import { prepareSync } from './sync/base/crossWindowSync.ts';
 
@@ -46,6 +47,9 @@ function App(): ReactElement {
   /** 各 WebView 独立挂载时，按配置同步任务栏时钟（不依赖设置页是否打开）。 */
   useWindowsTrayClockBootstrap();
 
+  /** 桌面端自动检测更新：按用户配置的周期检查新版本，弹窗引导一键更新。 */
+  const updateContextHolder = useAutoUpdate();
+
   useEffect(() => {
     /** 当 URL 或内部导航事件变化时，同步更新当前移动端视图。 */
     const handleLocationChange = () => {
@@ -62,7 +66,12 @@ function App(): ReactElement {
     };
   }, []);
 
-  return resolveWindow(mobileView);
+  return (
+    <>
+      {updateContextHolder}
+      {resolveWindow(mobileView)}
+    </>
+  );
 }
 
 /** 等配置同步系统准备完成后，初始化节假日数据并启动定时轮询，再挂载 React 根节点。 */

@@ -25,6 +25,8 @@
     "autostart:allow-disable",
     "autostart:allow-is-enabled",
     "os:default",
-    "clipboard-manager:allow-write-text"
+    "clipboard-manager:allow-write-text",
+    "updater:default",
+    "process:default"
   ]
 }

@@ -119,6 +119,16 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Prepare signing env
+        shell: bash
+        env:
+          RAW_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+        run: |
+          if [ -n "$RAW_KEY" ]; then
+            CLEAN_KEY=$(printf '%s' "$RAW_KEY" | tr -d '\n\r')
+            echo "TAURI_SIGNING_PRIVATE_KEY=$CLEAN_KEY" >> "$GITHUB_ENV"
+          fi
+
       - name: Install dependencies (Ubuntu only)
         if: matrix.platform == 'ubuntu-latest'
         run: |
@@ -129,6 +139,7 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
         with:
           tagName: ${{ github.event.inputs.tag || github.ref_name }}
           releaseName: '松鼠日历 ${{ github.event.inputs.tag || github.ref_name }}'

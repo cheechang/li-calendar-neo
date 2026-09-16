@@ -22,3 +22,8 @@ dist-ssr
 *.sln
 *.sw?
 /.android-sdk/
+
+# Tauri updater signing keys
+*.key
+*.key.pub
+.qoder/

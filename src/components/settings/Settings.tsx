@@ -9,6 +9,7 @@ import FontSizeForm from './forms/FontSizeForm.tsx';
 import HolidayDataForm from './forms/HolidayDataForm.tsx';
 import MacosTrayTitleSettings from './forms/MacosTrayTitleSettings.tsx';
 import TransparentEffectForm from './forms/TransparentEffectForm.tsx';
+import UpdateForm from './forms/UpdateForm.tsx';
 import WidgetShowForm from './forms/WidgetShowForm.tsx';
 import WindowsTrayForm from './forms/WindowsTrayForm.tsx';
 
@@ -50,6 +51,7 @@ const Settings: React.FC<SettingsPageProps> = ({ mobileCalendarOnly = false }) =
           <div>
             {isDesktop && <AutostartForm />}
             {isDesktop && <WidgetShowForm />}
+            {isDesktop && <UpdateForm />}
             <FontSizeForm />
             <TransparentEffectForm />
           </div>

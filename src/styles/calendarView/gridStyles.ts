@@ -14,26 +14,51 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
     font-weight: 600;
   `;
   const today = css`
-    background: var(--accent);
+    position: relative;
+    background: transparent;
     color: ${isDark ? '#000000' : '#ffffff'};
 
+    /* 圆形聚焦点：居中、略小于格子，参考 Windows 11 原生日历 */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(100% - 4px);
+      height: calc(100% - 4px);
+      background: var(--accent);
+      border-radius: 50%;
+      z-index: -1;
+      transition: filter 0.1s ease;
+    }
+
+    &:hover::before {
+      filter: brightness(1.07);
+    }
+
+    /* 覆盖 .cell 的灰底 hover */
+    &:hover {
+      background: transparent;
+    }
+
+    /* today 圆圈内的阴历文字：与日期数字使用同一套高对比度颜色 */
     .${cx(lunar)} {
-      color: ${isDark ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.9)'};
+      color: ${isDark ? '#000000' : '#ffffff'};
     }
 
     .${cx(term)} {
       color: ${isDark ? '#000000' : '#ffffff'};
     }
-
-    /* 覆盖 .cell 的灰底 hover：保持强调色底，整体略提亮作为反馈（不叠灰底） */
-    &:hover {
-      background: var(--accent);
-      filter: brightness(1.07);
-    }
   `;
 
   return {
+    /** 外层容器：普通 block 布局，表头行 + 格子区域上下排列 */
     calendarGrid: css`
+      display: block;
+    `,
+    /** 格子区域：CSS Grid，仅此区域参与滑动动画 */
+    gridCellsContainer: css`
       display: grid;
       gap: 1px;
       justify-items: center;
@@ -108,8 +133,9 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
       &.${cx(today)} {
         color: ${isDark ? '#000000' : '#ffffff'};
 
+        /* 周末且 today：阴历文字同样用高对比度（覆盖周末蓝色） */
         .${cx(lunar)} {
-          color: ${isDark ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.9)'};
+          color: ${isDark ? '#000000' : '#ffffff'};
         }
       }
     `,
@@ -117,18 +143,18 @@ export function createCalendarGridStyles(ctx: CalendarViewStyleContext) {
     term,
     tag: css`
       position: absolute;
-      top: 2px;
-      right: 2px;
-      font-size: calc(10px * var(--font-scale));
-      min-width: 16px;
-      min-height: 16px;
-      padding: 0 2px;
+      top: 1px;
+      right: 1px;
+      font-size: calc(8px * var(--font-scale));
+      min-width: 13px;
+      min-height: 13px;
+      padding: 0 1px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
       z-index: 1;
-      border-radius: 4px;
+      border-radius: 3px;
       line-height: 1;
     `,
     tagWork: css`
