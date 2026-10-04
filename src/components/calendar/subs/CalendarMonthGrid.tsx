@@ -61,7 +61,7 @@ function CalendarMonthGrid(): ReactElement {
 
     // 格子区域实际高度，用作动画滑动距离
     const gridH = el.offsetHeight || 280;
-    const direction = monthDiff > 0 ? -1 : 1;
+    const direction = monthDiff > 0 ? 1 : -1;
     const startOffset = direction * gridH * 0.55;
 
     el.animate(
