@@ -1,5 +1,6 @@
 import { listen } from '@tauri-apps/api/event';
 import { HolidayUtil } from 'lunar-typescript';
+import builtinHolidayData from '../../holidays.json';
 import { useConfigSync } from '../sync/configStore.ts';
 import type { HolidayPatchItem, HolidayRemoteData } from '../sync/type/configTypes.ts';
 
@@ -222,12 +223,21 @@ export function stopHolidayDataPolling(): void {
 
 /** 应用启动时初始化节假日数据 */
 export async function initializeHolidayData(): Promise<void> {
+  // 0. 始终先应用打包在应用内的内置节假日数据（确保 lunar-typescript 内置数据覆盖到最新年份）
+  applyHolidayPatch(builtinHolidayData as HolidayRemoteData);
+  console.log(
+    '[holidayService] 已应用内置节假日数据:',
+    builtinHolidayData.holidays.length,
+    '条, 版本:',
+    builtinHolidayData.version,
+  );
+
   const { holidayDataSource, holidayRemoteUrl, holidayDataCache } = useConfigSync.getState().data;
 
-  // 1. 如果配置了远程且有缓存，先应用缓存（保证离线时也能使用上次的数据）
+  // 1. 如果配置了远程且有缓存，用远程缓存覆盖内置数据（远程数据优先级更高）
   if (holidayDataSource === 'remote' && holidayDataCache && holidayDataCache.length > 0) {
     applyHolidayPatch({ holidays: holidayDataCache });
-    console.log('[holidayService] 已从缓存应用节假日数据:', holidayDataCache.length, '条');
+    console.log('[holidayService] 已从缓存应用远程节假日数据:', holidayDataCache.length, '条');
   }
 
   // 2. 如果配置了远程 URL，尝试静默拉取最新数据
@@ -235,8 +245,8 @@ export async function initializeHolidayData(): Promise<void> {
     try {
       await refreshHolidayData(holidayRemoteUrl.trim());
     } catch {
-      // 静默失败，已应用缓存数据或内置数据
-      console.error('[holidayService] 启动时拉取远程数据失败，使用缓存/内置数据');
+      // 静默失败，已应用内置数据或缓存数据
+      console.error('[holidayService] 启动时拉取远程数据失败，使用内置/缓存数据');
     }
   }
 
