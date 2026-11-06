@@ -268,7 +268,7 @@ export function useCalendarViewModel({
       if (Math.abs(accumulatedDelta) < THRESHOLD) return;
 
       cooldown = true;
-      if (accumulatedDelta > 0) {
+      if (accumulatedDelta < 0) {
         setPanelMonth((m) => m.subtract(1, 'month'));
       } else {
         setPanelMonth((m) => m.add(1, 'month'));
